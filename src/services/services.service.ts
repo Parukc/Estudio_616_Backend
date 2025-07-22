@@ -2,32 +2,30 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Service } from './service.entity';
+import { CreateServiceDto } from './dto/create-service.dto';
 
 @Injectable()
 export class ServicesService {
   constructor(
     @InjectRepository(Service)
-    private readonly serviceRepository: Repository<Service>,
+    private serviceRepo: Repository<Service>,
   ) {}
 
-  create(data: Partial<Service>) {
-    const service = this.serviceRepository.create(data);
-    return this.serviceRepository.save(service);
+  create(dto: CreateServiceDto) {
+    const nuevo = this.serviceRepo.create(dto);
+    return this.serviceRepo.save(nuevo);
   }
 
   findAll() {
-    return this.serviceRepository.find();
+    return this.serviceRepo.find({ order: { id: 'DESC' } });
   }
 
-  findOne(id: number) {
-    return this.serviceRepository.findOneBy({ id });
+  async update(id: number, dto: CreateServiceDto) {
+    await this.serviceRepo.update(id, dto);
+    return this.serviceRepo.findOne({ where: { id } });
   }
 
-  update(id: number, data: Partial<Service>) {
-    return this.serviceRepository.update(id, data);
-  }
-
-  remove(id: number) {
-    return this.serviceRepository.delete(id);
+  delete(id: number) {
+    return this.serviceRepo.delete(id);
   }
 }

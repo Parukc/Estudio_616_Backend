@@ -8,12 +8,20 @@ export class OrdersService {
   constructor(@InjectModel(Order.name) private orderModel: Model<OrderDocument>) {}
 
   create(data: Partial<Order>) {
-    const created = new this.orderModel(data);
-    return created.save();
+    const nueva = new this.orderModel(data);
+    return nueva.save();
   }
 
   findAll() {
     return this.orderModel.find().exec();
+  }
+
+  findByUser(userId: number) {
+    return this.orderModel.find({ userId }).exec();
+  }
+
+  updateEstado(id: string, estado: string) {
+    return this.orderModel.findByIdAndUpdate(id, { estado }, { new: true }).exec();
   }
 
   delete(id: string) {

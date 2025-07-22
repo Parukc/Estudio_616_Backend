@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Delete,
+  Put,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { Order } from './order.schema';
 
@@ -7,13 +15,23 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() body: Partial<Order>) {
-    return this.ordersService.create(body);
+  create(@Body() order: Partial<Order>) {
+    return this.ordersService.create(order);
   }
 
   @Get()
   findAll() {
     return this.ordersService.findAll();
+  }
+
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.ordersService.findByUser(Number(userId));
+  }
+
+  @Put(':id')
+  updateEstado(@Param('id') id: string, @Body('estado') estado: string) {
+    return this.ordersService.updateEstado(id, estado);
   }
 
   @Delete(':id')

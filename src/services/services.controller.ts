@@ -1,14 +1,28 @@
-import { Controller, Get, Post, Put, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { Service } from './service.entity';
+import { CreateServiceDto } from './dto/create-service.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
-  create(@Body() body: Partial<Service>) {
-    return this.servicesService.create(body);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  create(@Body() dto: CreateServiceDto) {
+    return this.servicesService.create(dto);
   }
 
   @Get()
@@ -16,18 +30,17 @@ export class ServicesController {
     return this.servicesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(+id);
-  }
-
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: Partial<Service>) {
-    return this.servicesService.update(+id, body);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  update(@Param('id') id: string, @Body() dto: CreateServiceDto) {
+    return this.servicesService.update(Number(id), dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  delete(@Param('id') id: string) {
+    return this.servicesService.delete(Number(id));
   }
 }

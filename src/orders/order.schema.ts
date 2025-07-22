@@ -3,22 +3,19 @@ import { Document } from 'mongoose';
 
 export type OrderDocument = Order & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Order {
   @Prop({ required: true })
-  clientName: string;
+  userId: number;
 
   @Prop({ required: true })
-  email: string;
+  items: string[]; // o un array de objetos { productoId, cantidad }
+
+  @Prop({ default: 'pendiente' })
+  estado: string; // pendiente, confirmado, cancelado
 
   @Prop()
-  service: string;
-
-  @Prop()
-  notes: string;
-
-  @Prop({ default: Date.now })
-  createdAt: Date;
+  total: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

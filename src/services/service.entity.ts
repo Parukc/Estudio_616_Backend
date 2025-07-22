@@ -6,11 +6,11 @@ export class Service {
   id: number;
 
   @Column()
-  title: string;
+  titulo: string;
 
-  @Column('text')
-  description: string;
+  @Column()
+  descripcion: string;
 
-  @Column({ nullable: true })
-  icon: string;
+  @Column()
+  imagen: string; // Puedes almacenar una URL de imagen o base64
 }
