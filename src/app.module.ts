@@ -25,15 +25,23 @@ import { AdminModule } from './admin/admin.module';
     ConfigModule.forRoot({ isGlobal: true }),
 
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    type: 'postgres',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT ? +process.env.POSTGRES_PORT : 5432,
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    autoLoadEntities: true,
+    synchronize: true,
+
+    ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+      },
+    },
+  }),
+  
 
     MongooseModule.forRoot(process.env.MONGO_URI!),
 
