@@ -11,18 +11,18 @@ async function bootstrap() {
   // 🟩 Archivos estáticos
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
-  // 🟦 Validaciones globales
+  //  Validaciones globales
   app.useGlobalPipes(new ValidationPipe());
 
   // 🔐 CORS personalizado para permitir Netlify
   app.enableCors({
-    origin: ['https://estudio616.netlify.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+  origin: 'https://estudio616.netlify.app', // También puedes usar array si deseas varios orígenes
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: '*', //  Esta línea permite cualquier encabezado necesario
+  credentials: true,
   });
 
-  // 🧾 Documentación Swagger
+  // Documentación Swagger
   const config = new DocumentBuilder()
     .setTitle('Estudio 616 API')
     .setDescription('Documentación de la API del estudio de arquitectura')
