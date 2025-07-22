@@ -8,7 +8,7 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 🔐 CORS personalizado para permitir Netlify
+  // ✅ Configura CORS primero
   app.enableCors({
     origin: ['https://estudio616.netlify.app'],
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
@@ -22,7 +22,7 @@ async function bootstrap() {
   // ✅ Validaciones globales
   app.useGlobalPipes(new ValidationPipe());
 
-  // 📄 Documentación Swagger
+  // 📄 Swagger
   const config = new DocumentBuilder()
     .setTitle('Estudio 616 API')
     .setDescription('Documentación de la API del estudio de arquitectura')
@@ -33,7 +33,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // ✅ Solo esta línea para Render:
+  // ✅ Solo esta línea al final
   await app.listen(process.env.PORT || 3000);
 }
 
