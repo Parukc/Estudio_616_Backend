@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class Contact {
@@ -6,20 +6,20 @@ export class Contact {
   id: number;
 
   @Column()
-  name: string;
+  nombre: string;
 
   @Column()
-  email: string;
+  correo: string;
 
   @Column()
-  message: string;
+  mensaje: string;
 
-  @Column({ nullable: true })
-  phone?: string;
-
-  @Column({ nullable: true })
-  comentario?: string;
+  @Column()
+  telefono: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  fecha: Date; // Esta es la línea que estabas preguntando
+
+  @Column({ nullable: true })
+  comentario: string;
 }

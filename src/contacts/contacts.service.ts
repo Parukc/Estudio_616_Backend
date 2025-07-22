@@ -17,7 +17,7 @@ export class ContactsService {
   }
 
   findAll(): Promise<Contact[]> {
-    return this.contactRepository.find({ order: { createdAt: 'DESC' } });
+    return this.contactRepository.find({ order: { fecha: 'DESC' } });
   }
 
   // ✅ Editar comentario con validación segura
