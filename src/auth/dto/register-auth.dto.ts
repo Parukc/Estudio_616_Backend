@@ -1,27 +1,34 @@
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+// src/auth/dto/register-auth.dto.ts
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { UserRole } from '../../users/user.entity';
 
 export class RegisterAuthDto {
-  @IsString()
-  nombres: string;
-
   @IsEmail()
   email: string;
 
   @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nombres: string;
+
+  @IsString()
+  @IsNotEmpty()
   telefono: string;
 
   @IsString()
+  @IsNotEmpty()
   username: string;
 
   @IsString()
-  password: string;
+  @IsNotEmpty()
+  address: string;
 
   @IsOptional()
-  @IsEnum(UserRole)
   role?: UserRole;
 
   @IsOptional()
-  @IsString()
   claveAdmin?: string;
 }
