@@ -5,20 +5,20 @@ export class Contact {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true }) // ✅
   nombre: string;
 
-  @Column()
+  @Column({ nullable: true }) // ✅
   correo: string;
 
-  @Column()
+  @Column({ nullable: true }) // ✅
   mensaje: string;
 
-  @Column()
+  @Column({ nullable: true }) // ✅
   telefono: string;
 
   @CreateDateColumn()
-  fecha: Date; // Esta es la línea que estabas preguntando
+  fecha: Date;
 
   @Column({ nullable: true })
   comentario: string;
