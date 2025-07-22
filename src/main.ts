@@ -7,6 +7,12 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: ['https://estudio616.netlify.app'], // ✅ frontend URL
+    credentials: true, // Si usas cookies o headers personalizados
+  });
+  await app.listen(3000);
+
 
   // 🟩 Archivos estáticos
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
