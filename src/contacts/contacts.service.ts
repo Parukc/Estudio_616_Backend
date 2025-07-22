@@ -11,29 +11,40 @@ export class ContactsService {
     private contactRepository: Repository<Contact>,
   ) {}
 
+  // ✅ Crear contacto
   create(dto: CreateContactDto): Promise<Contact> {
     const contact = this.contactRepository.create(dto);
     return this.contactRepository.save(contact);
   }
 
+  // ✅ Obtener todos los contactos, ordenados por fecha descendente
   findAll(): Promise<Contact[]> {
-    return this.contactRepository.find({ order: { fecha: 'DESC' } });
+    return this.contactRepository.find({
+      order: { fecha: 'DESC' },
+    });
   }
 
-  // ✅ Editar comentario con validación segura
+  // ✅ Editar comentario con verificación de existencia
   async updateComentario(id: number, comentario: string): Promise<Contact> {
-    const contacto = await this.contactRepository.findOne({ where: { id } });
+    await this.contactRepository.update(id, { comentario });
 
-    if (!contacto) {
-      throw new NotFoundException('Contacto no encontrado');
+    const contact = await this.contactRepository.findOne({ where: { id } });
+
+    if (!contact) {
+      throw new NotFoundException(`Contacto con ID ${id} no encontrado`);
     }
 
-    contacto.comentario = comentario;
-    return this.contactRepository.save(contacto);
+    return contact;
   }
 
-  // ✅ Eliminar contacto
+  // ✅ Eliminar contacto con verificación (opcional)
   async delete(id: number): Promise<void> {
+    const contact = await this.contactRepository.findOne({ where: { id } });
+
+    if (!contact) {
+      throw new NotFoundException(`Contacto con ID ${id} no encontrado`);
+    }
+
     await this.contactRepository.delete(id);
   }
 }
