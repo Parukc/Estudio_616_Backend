@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity()
 export class Contact {
@@ -11,12 +11,15 @@ export class Contact {
   @Column()
   email: string;
 
-  @Column({ nullable: true })
-  phone?: string;
-
   @Column()
   message: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ nullable: true })
+  phone?: string;
+
+  @Column({ nullable: true })
+  comentario?: string;
+
+  @CreateDateColumn()
   createdAt: Date;
 }

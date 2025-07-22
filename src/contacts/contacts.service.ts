@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Contact } from './contact.entity';
@@ -18,5 +18,22 @@ export class ContactsService {
 
   findAll(): Promise<Contact[]> {
     return this.contactRepository.find({ order: { createdAt: 'DESC' } });
+  }
+
+  // ✅ Editar comentario con validación segura
+  async updateComentario(id: number, comentario: string): Promise<Contact> {
+    const contacto = await this.contactRepository.findOne({ where: { id } });
+
+    if (!contacto) {
+      throw new NotFoundException('Contacto no encontrado');
+    }
+
+    contacto.comentario = comentario;
+    return this.contactRepository.save(contacto);
+  }
+
+  // ✅ Eliminar contacto
+  async delete(id: number): Promise<void> {
+    await this.contactRepository.delete(id);
   }
 }
