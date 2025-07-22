@@ -3,15 +3,15 @@ import { Document } from 'mongoose';
 
 export type GalleryDocument = Gallery & Document;
 
-@Schema()
+@Schema({ timestamps: true }) // 🕒 Agrega createdAt y updatedAt automáticamente
 export class Gallery {
   @Prop({ required: true })
   url: string;
 
-  @Prop()
+  @Prop({ default: '' }) // Opcional pero útil si algún día usas títulos
   title: string;
 
-  @Prop()
+  @Prop({ default: '' })
   description: string;
 
   @Prop()

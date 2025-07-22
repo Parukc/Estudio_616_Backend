@@ -8,33 +8,32 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ✅ Permitir peticiones desde tu frontend (Netlify u otros)
+  // 🛡️ CORS CONFIG → Solo permite solicitudes desde tu frontend en Netlify
   app.enableCors({
-    origin: ['https://estudio616.netlify.app'],
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: '*',
-    credentials: true,
+    origin: ['https://estudio616.netlify.app'], // Puedes agregar más dominios si necesitas
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Para permitir envío de cookies o headers JWT
   });
 
-  // ✅ Servir archivos estáticos desde /uploads
+  // 📁 SERVIR ARCHIVOS ESTÁTICOS (solo en local o servidores que soporten FS)
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
-  // ✅ Habilita validaciones DTO globales
+  // ✅ Validaciones globales para los DTOs
   app.useGlobalPipes(new ValidationPipe());
 
-  // ✅ Swagger (documentación de tu API)
+  // 📘 Swagger config
   const config = new DocumentBuilder()
     .setTitle('Estudio 616 API')
     .setDescription('Documentación de la API del estudio de arquitectura')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth() // Para endpoints protegidos por JWT
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // ✅ Levanta el servidor
+  // 🚀 Iniciar la app
   await app.listen(process.env.PORT || 3000);
 }
-
 bootstrap();
