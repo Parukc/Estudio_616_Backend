@@ -7,28 +7,22 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({
-    origin: ['https://estudio616.netlify.app'], // ✅ frontend URL
-    credentials: true, // Si usas cookies o headers personalizados
-  });
-  await app.listen(3000);
 
+  // 🔐 CORS personalizado para permitir Netlify
+  app.enableCors({
+    origin: ['https://estudio616.netlify.app'],
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: '*',
+    credentials: true,
+  });
 
   // 🟩 Archivos estáticos
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
-  //  Validaciones globales
+  // ✅ Validaciones globales
   app.useGlobalPipes(new ValidationPipe());
 
-  // 🔐 CORS personalizado para permitir Netlify
-  app.enableCors({
-  origin: 'https://estudio616.netlify.app', // También puedes usar array si deseas varios orígenes
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
-  allowedHeaders: '*', //  Esta línea permite cualquier encabezado necesario
-  credentials: true,
-  });
-
-  // Documentación Swagger
+  // 📄 Documentación Swagger
   const config = new DocumentBuilder()
     .setTitle('Estudio 616 API')
     .setDescription('Documentación de la API del estudio de arquitectura')
@@ -39,6 +33,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  // ✅ Solo esta línea para Render:
   await app.listen(process.env.PORT || 3000);
 }
 
