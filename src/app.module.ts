@@ -33,15 +33,13 @@ import { AdminModule } from './admin/admin.module';
     database: process.env.POSTGRES_DB,
     autoLoadEntities: true,
     synchronize: true,
-
-    ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
+    ssl: true, // 👈 habilita conexión segura
+    extra: {
+      ssl: {
+        rejectUnauthorized: false, // 👈 evita error con certificados de Neon
       },
     },
   }),
-  
 
     MongooseModule.forRoot(process.env.MONGO_URI!),
 
