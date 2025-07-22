@@ -1,5 +1,5 @@
-import { IsEmail, IsString, IsOptional, IsEnum } from 'class-validator';
-import { UserRole } from 'src/users/user.entity';
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import { UserRole } from '../../users/user.entity';
 
 export class RegisterAuthDto {
   @IsString()
@@ -10,9 +10,6 @@ export class RegisterAuthDto {
 
   @IsString()
   telefono: string;
-
-  @IsString()
-  address: string;
 
   @IsString()
   username: string;
